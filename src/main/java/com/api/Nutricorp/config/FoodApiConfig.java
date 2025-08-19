@@ -13,4 +13,7 @@ public class FoodApiConfig {
 
     @Value("${fatsecret.Uri}")
     public String BaseURI;
+
+    @Value("${fatsecret.AuthUri}")
+    public String AuthURI;
 }
