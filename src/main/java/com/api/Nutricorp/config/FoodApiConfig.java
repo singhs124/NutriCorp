@@ -1,19 +1,17 @@
 package com.api.Nutricorp.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
+@ConfigurationProperties(prefix = "fatsecret")
+@Getter
+@Setter
 public class FoodApiConfig {
-    @Value("${fatsecret.clientId}")
-    public String foodApiClientId;
-
-    @Value("${fatsecret.clientSecret}")
-    public String foodApiClientSecret;
-
-    @Value("${fatsecret.Uri}")
-    public String BaseURI;
-
-    @Value("${fatsecret.AuthUri}")
-    public String AuthURI;
+    private String clientId;
+    private String clientSecret;
+    private String BaseUri;
+    private String AuthUri;
 }
