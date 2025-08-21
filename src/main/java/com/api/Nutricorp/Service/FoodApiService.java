@@ -20,6 +20,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FoodApiService {
@@ -36,10 +37,10 @@ public class FoodApiService {
         this.foodApiConfig = foodApiConfig ;
         this.authWebClient = authWebClient;
         this.apiWebClient = apiWebClient;
-        fetchAcessToken();
+        fetchAccessToken();
     }
 
-    private void fetchAcessToken(){
+    private void fetchAccessToken(){
         try {
             String credentials = foodApiConfig.getClientId() + ":" + foodApiConfig.getClientSecret();
             String basicAuth = Base64.getEncoder().encodeToString(credentials.getBytes());
@@ -60,7 +61,9 @@ public class FoodApiService {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(responseBody);
             access_token = rootNode.get("access_token").asText();
+            System.out.println("<--------------->");
             System.out.println("Token Fetched Successfully!");
+            System.out.println("<--------------->");
         } catch (WebClientResponseException e){
             System.out.println("HTTP Error: Status " + e.getRawStatusCode() + "-" + e.getResponseBodyAsString());
         } catch (WebClientRequestException e){
@@ -72,13 +75,14 @@ public class FoodApiService {
         }
     }
 
-    public void getFoodList(String item) throws JsonProcessingException {
+    public List<String> getFoodList(String item) throws JsonProcessingException {
         List<String> result = new ArrayList<>();
         ResponseEntity<String> response = apiWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/foods/search/v1")
-                        .queryParam("expression" , item)
+                        .queryParam("search_expression" , item)
                         .queryParam("format" , "json")
+                        .queryParam("max_results" , 10)
                         .build())
                 .header("Authorization" , "Bearer " + access_token)
                 .retrieve()
@@ -86,12 +90,25 @@ public class FoodApiService {
                 .block();
         if(response == null || !response.hasBody()){
             System.out.println("No Response or empty Response Body");
-            return ;
+            return result;
         }
         String responseBody = response.getBody();
+        int foodcnt = 0 ;
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(responseBody);
-        return;
+        JsonNode foodArray = root.path("foods").path("food");
+        if(foodArray.isArray()){
+            for(JsonNode food: foodArray){
+                if(foodcnt == 5) break;
+                String foodType = food.path("food_type").asText();
+                String foodName = food.path("food_name").asText();
+                System.out.println(foodType + "-->" + foodName);
+                if(Objects.equals(foodType, "Brand")) continue;
+                result.add(foodName);
+                foodcnt++;
+            }
+        }
+        return result;
     }
 
     public void getFoodDetails(String item){
