@@ -3,6 +3,7 @@ package com.api.Nutricorp.Service;
 import com.api.Nutricorp.Model.TokenModel;
 import com.api.Nutricorp.config.FoodApiConfig;
 import com.api.Nutricorp.config.WebClientConfig;
+import com.api.Nutricorp.dto.Food;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -75,8 +76,8 @@ public class FoodApiService {
         }
     }
 
-    public List<String> getFoodList(String item) throws JsonProcessingException {
-        List<String> result = new ArrayList<>();
+    public List<Food> getFoodList(String item) throws JsonProcessingException {
+        List<Food> result = new ArrayList<>();
         ResponseEntity<String> response = apiWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/foods/search/v1")
@@ -93,19 +94,18 @@ public class FoodApiService {
             return result;
         }
         String responseBody = response.getBody();
-        int foodcnt = 0 ;
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(responseBody);
         JsonNode foodArray = root.path("foods").path("food");
         if(foodArray.isArray()){
             for(JsonNode food: foodArray){
-                if(foodcnt == 5) break;
                 String foodType = food.path("food_type").asText();
                 String foodName = food.path("food_name").asText();
+                String foodId = food.path("food_id").asText();
+                String desc = food.path("food_description").asText();
+                Food foodObject = new Food(foodName,foodId,desc);
                 System.out.println(foodType + "-->" + foodName);
-                if(Objects.equals(foodType, "Brand")) continue;
-                result.add(foodName);
-                foodcnt++;
+                result.add(foodObject);
             }
         }
         return result;

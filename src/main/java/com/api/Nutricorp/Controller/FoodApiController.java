@@ -1,6 +1,8 @@
 package com.api.Nutricorp.Controller;
 
 import com.api.Nutricorp.Service.FoodApiService;
+import com.api.Nutricorp.dto.ApiResponse;
+import com.api.Nutricorp.dto.Food;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -16,9 +18,9 @@ public class FoodApiController {
     FoodApiService foodApiService;
 
     @GetMapping("/getFoods")
-    public ResponseEntity<List<String>> searchFood(@RequestParam String foodItem) throws JsonProcessingException {
-        List<String> foods = foodApiService.getFoodList(foodItem);
-        return new ResponseEntity<>(foods, HttpStatusCode.valueOf(200));
+    public ResponseEntity<ApiResponse<List<Food>>> searchFood(@RequestParam String foodItem) throws JsonProcessingException {
+        List<Food> foods = foodApiService.getFoodList(foodItem);
+        return new ResponseEntity<>(new ApiResponse<List<Food>>(true,foods), HttpStatusCode.valueOf(200));
     }
 
 }
