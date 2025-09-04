@@ -38,7 +38,7 @@ public class FoodApiService {
         this.foodApiConfig = foodApiConfig ;
         this.authWebClient = authWebClient;
         this.apiWebClient = apiWebClient;
-        fetchAccessToken();
+//        fetchAccessToken();
     }
 
     private void fetchAccessToken(){
