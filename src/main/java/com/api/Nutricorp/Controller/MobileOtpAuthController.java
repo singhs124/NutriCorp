@@ -11,8 +11,8 @@ public class MobileOtpAuthController {
     @Autowired
     MobileOtpAuthService mobileOtpAuthService;
 
-    @GetMapping("/mobileNumber")
-    public void getOtp(@RequestParam String number){
+    @PostMapping("/send-otp")
+    public void getOtp(@RequestBody String number){
         mobileOtpAuthService.sendOtp(number);
     }
 
