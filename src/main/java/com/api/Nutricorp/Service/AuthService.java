@@ -1,7 +1,7 @@
 package com.api.Nutricorp.Service;
 
 import com.api.Nutricorp.Component.PhoneNumberValidator;
-import com.api.Nutricorp.dto.OTPData;
+import com.api.Nutricorp.DTO.OTPData;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +25,10 @@ public class AuthService {
         //Is it good to store otp here or in generateOtp() method
         otpService.storeOtp(phoneNumber,otp);
         smsService.sendOTP(phoneNumber,otp.getOtp());
+    }
 
+    public void loginWithOtp(String number, String code){
+        otpService.verifyOtp(number,code);
     }
 
 

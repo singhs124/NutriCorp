@@ -1,6 +1,6 @@
 package com.api.Nutricorp.ExceptionHandler;
 
-import com.api.Nutricorp.dto.ApiResponse;
+import com.api.Nutricorp.DTO.ApiResponse;
 import org.springframework.http.ResponseEntity;
 
 public class GlobalExceptionHandler extends RuntimeException {

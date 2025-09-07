@@ -1,9 +1,8 @@
 package com.api.Nutricorp.Controller;
 
+import com.api.Nutricorp.DTO.OTPRequest;
 import com.api.Nutricorp.Service.AuthService;
-import com.api.Nutricorp.Service.MobileOtpAuthService;
-import com.api.Nutricorp.dto.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.api.Nutricorp.DTO.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +28,16 @@ public class MobileOtpAuthController {
         }
     }
 
-//    @GetMapping("/login")
-//    public void authenticateOtp(@RequestParam String number, @RequestParam String otp){
-//        mobileOtpAuthService.authenticateUser(number,otp);
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<String>> authenticateOtp(@RequestBody OTPRequest request){
+        try{
+            String number = request.getPhoneNumber();
+            String otp = request.getCode();
+            authService.loginWithOtp(number,otp);
+            return ResponseEntity.ok(new ApiResponse<>(true,"Successfullly Authenticated!"));
+        } catch (Exception e){
+            System.out.println("Failed to Authenticate User: "+e.getMessage());
+            return ResponseEntity.badRequest().body(new ApiResponse<>(false, "User is not Authenticated"));
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package com.api.Nutricorp.Service;
 
 import com.api.Nutricorp.config.SMSProviderConfig;
-import com.api.Nutricorp.dto.OTPData;
 import org.springframework.stereotype.Service;
 
 @Service

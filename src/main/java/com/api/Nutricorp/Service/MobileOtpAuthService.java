@@ -1,13 +1,8 @@
 package com.api.Nutricorp.Service;
 
-import com.api.Nutricorp.dto.OTPData;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.api.Nutricorp.DTO.OTPData;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;

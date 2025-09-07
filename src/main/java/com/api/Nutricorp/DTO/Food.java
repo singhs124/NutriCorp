@@ -1,4 +1,4 @@
-package com.api.Nutricorp.dto;
+package com.api.Nutricorp.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

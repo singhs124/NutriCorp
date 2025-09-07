@@ -2,7 +2,7 @@ package com.api.Nutricorp.Service;
 
 import com.api.Nutricorp.ExceptionHandler.InvalidOTPExceptionHandler;
 import com.api.Nutricorp.ExceptionHandler.OTPExpiredExceptionHandler;
-import com.api.Nutricorp.dto.OTPData;
+import com.api.Nutricorp.DTO.OTPData;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -29,7 +29,7 @@ public class OTPService {
 //        log.info("Added otp for phoneNumber: "+ phoneNumber);
     }
 
-    public boolean verifyOtp(String phoneNumber, OTPData otp){
+    public boolean verifyOtp(String phoneNumber, String otp){
         boolean phoneNumberExists = storage.containsKey(phoneNumber);
         if(!phoneNumberExists){
 //            log.warn("Phone Number not Found | OTP not Generated!");
@@ -38,11 +38,9 @@ public class OTPService {
         OTPData storedOtp = storage.get(phoneNumber);
         if(System.currentTimeMillis()> storedOtp.getExpiryTime()){
             storage.remove(phoneNumber);
-            System.out.println("OTP Expired! Get new OTP");
             throw new OTPExpiredExceptionHandler("OTP has Expired!");
         }
-        if(!storedOtp.getOtp().equals(otp.getOtp())){
-            System.out.println("Incorrect OTP");
+        if(!storedOtp.getOtp().equals(otp)){
 //            log.warn("Invalid OTP attempt for phone : {}" , phoneNumber);
             throw new InvalidOTPExceptionHandler("Incorrect OTP!");
         }

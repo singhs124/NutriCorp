@@ -1,16 +1,12 @@
 package com.api.Nutricorp.Service;
 
-import com.api.Nutricorp.Model.TokenModel;
 import com.api.Nutricorp.config.FoodApiConfig;
-import com.api.Nutricorp.config.WebClientConfig;
-import com.api.Nutricorp.dto.Food;
+import com.api.Nutricorp.DTO.Food;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -21,7 +17,6 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class FoodApiService {
