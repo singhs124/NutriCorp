@@ -1,5 +1,6 @@
 package com.api.Nutricorp.Service;
 
+import com.api.Nutricorp.ExceptionHandler.InvalidOTPExceptionHandler;
 import com.api.Nutricorp.ExceptionHandler.OTPExpiredExceptionHandler;
 import com.api.Nutricorp.dto.OTPData;
 import org.springframework.stereotype.Service;
@@ -9,17 +10,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class otpService {
+public class OTPService {
     private final int len = 6;
     private Map<String, OTPData> storage = new HashMap<>();
 
-    public String generateOtp(){
+    public OTPData generateOtp(){
         StringBuilder otp = new StringBuilder(len);
         SecureRandom secureRandom = new SecureRandom();
         for(int i = 0 ; i < len; i++){
             otp.append(secureRandom.nextInt(10));
         }
-        return otp.toString();
+        long expiryTime = System.currentTimeMillis()+((5*60*1000));
+        return new OTPData(otp.toString(),expiryTime);
     }
 
     public void storeOtp(String phoneNumber, OTPData otp){
@@ -42,7 +44,7 @@ public class otpService {
         if(!storedOtp.getOtp().equals(otp.getOtp())){
             System.out.println("Incorrect OTP");
 //            log.warn("Invalid OTP attempt for phone : {}" , phoneNumber);
-            return false;
+            throw new InvalidOTPExceptionHandler("Incorrect OTP!");
         }
         System.out.println("User is Authenticated");
 //        log.info("Otp is confirmed for phone: "+ phoneNumber);
